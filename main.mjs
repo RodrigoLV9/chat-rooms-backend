@@ -11,9 +11,18 @@ const io=new Server(server,{
         methods: ["GET", "POST"]
     }
 })
-io.on('connection',()=>{
+io.on('connection',(socket)=>{
     console.log('New connection')
+
+    socket.on('disconnect',()=>{
+        console.log('User disconnected')
+    })
+    socket.on('chat message',(msg)=>{
+        io.emit('chat message',msg)
+    })
+
 })
+
 app.use(cors())
 app.get('/',(req,res)=>{
     res.send('Hello world!')
